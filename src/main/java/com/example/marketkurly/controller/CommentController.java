@@ -14,7 +14,6 @@ import java.util.List;
 
 
 @RequiredArgsConstructor
-@RequestMapping("/api")
 @RestController
 public class CommentController {
 
@@ -22,7 +21,7 @@ public class CommentController {
 
 
     /* 리뷰(코멘트) 조회 */
-    @GetMapping("/product/{product_id}/comment")
+    @GetMapping("/api/product/{product_id}/comment")
     public ResponseEntity<List<CommentResponseDto>> getComment(@PathVariable Long product_id, HttpServletRequest request) {
 
         return commentService.getComment(product_id, request);
@@ -30,7 +29,7 @@ public class CommentController {
 
 
     /* 리뷰(코멘트) 작성 */
-    @PostMapping("/comment/{product_id}")
+    @PostMapping("/api/comment/{product_id}")
     public ResponseEntity<CommentResponseDto> createComment(@PathVariable Long product_id,
                                                             @RequestPart(value = "comment") CommentRequestDto commentRequestDto,
                                                             @RequestPart(value = "imageUrl", required = false) MultipartFile multipartFile,
@@ -41,7 +40,7 @@ public class CommentController {
 
 
     /* 리뷰(코멘트) 수정 */
-    @PutMapping("/comment/{comment_id}")
+    @PutMapping("/api/comment/{comment_id}")
     public ResponseEntity<CommentResponseDto> updateComment(@PathVariable Long comment_id,
                                                             @RequestPart(value = "comment") CommentRequestDto commentRequestDto,
                                                             @RequestPart(value = "imageUrl", required = false) MultipartFile multipartFile,
@@ -53,7 +52,7 @@ public class CommentController {
 
 
     /* 리뷰(코멘트) 삭제 */
-    @DeleteMapping("/comment/{comment_id}")
+    @DeleteMapping("/api/comment/{comment_id}")
     public ResponseEntity<String> deleteComment(@PathVariable Long comment_id,
                                                 HttpServletRequest request) throws IOException {
 

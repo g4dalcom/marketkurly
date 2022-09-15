@@ -11,10 +11,10 @@ import java.util.List;
 @Getter
 @Builder
 @Entity
-public class Product {
+public class Product extends Timestamped {
 
     @Id
-    @Column(name = "product_id")
+    @Column(name = "product_id", nullable = false )
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
@@ -23,7 +23,7 @@ public class Product {
     private String title;
 
 
-    @Column(nullable = false)
+    @Column(length = 1000)
     private String imageUrl;
 
 
@@ -33,13 +33,4 @@ public class Product {
 
     @Column(nullable = false)
     private String product_detail;
-
-
-    @OneToMany(mappedBy = "product", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
-    private List<Comment> commentList;
-
-
-    public Product(List<Comment> commentList) {
-        this.commentList = commentList;
-    }
 }

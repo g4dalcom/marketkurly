@@ -1,5 +1,6 @@
 package com.example.marketkurly.dto.response;
 
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -11,7 +12,10 @@ import java.time.LocalDateTime;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class UserResponseDto {
+public class ProductResponseDto {
     private Long id;
-    private String nickname;
+    private String title;
+    private String imageUrl;
+    private int price;
+    private LocalDateTime modifiedAt;
 }

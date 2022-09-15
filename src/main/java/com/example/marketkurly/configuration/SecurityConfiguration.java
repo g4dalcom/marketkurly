@@ -20,7 +20,10 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.CorsUtils;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 @Configuration
 @EnableWebSecurity
@@ -52,7 +55,6 @@ public class SecurityConfiguration {
         .exceptionHandling()
         .authenticationEntryPoint(authenticationEntryPointException)
         .accessDeniedHandler(accessDeniedHandlerException)
-
         .and()
         .sessionManagement()
         .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
@@ -60,11 +62,10 @@ public class SecurityConfiguration {
         .and()
 //            권한없이 (=토큰없이) 이용가능한 api설정
         .authorizeRequests()
-        .antMatchers("/user/**").permitAll()
-        .antMatchers("/products").permitAll()
-        .antMatchers("/product/{product_id}").permitAll()
-        .antMatchers("/product/{product_id}/comment").permitAll()
-        .antMatchers("/user/kakao/callback").permitAll()
+        .antMatchers("/api/user/**").permitAll()
+        .antMatchers("/api/products").permitAll()
+        .antMatchers("/api/product/{product_id}").permitAll()
+        .antMatchers("/api/product/{product_id}/comment").permitAll()
         .antMatchers("/h2-console/**").permitAll() // h2-console 사용을 위해 추가
         .requestMatchers(CorsUtils::isPreFlightRequest).permitAll() // preflight 허용을 위해 추가
         .anyRequest().authenticated()
@@ -73,5 +74,17 @@ public class SecurityConfiguration {
         .apply(new JwtSecurityConfiguration(SECRET_KEY, tokenProvider, userDetailsService));
 
     return http.build();
+  }
+  @Bean
+  public CorsConfigurationSource corsConfigurationSource(){
+    CorsConfiguration configuration = new CorsConfiguration();
+    configuration.addAllowedOrigin("http://localhost:3000");
+    configuration.addAllowedHeader("*");
+    configuration.addAllowedMethod("*");
+    configuration.addExposedHeader("*");
+
+    UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+    source.registerCorsConfiguration("/**", configuration);
+    return source;
   }
 }
